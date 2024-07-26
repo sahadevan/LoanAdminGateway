@@ -1,18 +1,19 @@
-﻿using LoanGatewayAdmin.Models;
-using LoanGatewayAdmin.Services;
+﻿using LoanGatewayAdmin.Services;
 using LoanGatewayShared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoanGatewayAdmin.Controllers.v1
 {
-    [Route("api/v1/[controller]")]
+	[Route("api/v1/[controller]")]
 	[ApiController]
 	public class LoanAdminController : ControllerBase
 	{
+		private readonly ILogger<LoanAdminController> _logger;
 		private readonly ILoanAdminService _loanAdminService;
-		public LoanAdminController(ILoanAdminService loanAdminService)
+		public LoanAdminController(ILoanAdminService loanAdminService, ILogger<LoanAdminController> logger)
 		{
 			_loanAdminService = loanAdminService;
+			_logger = logger;
 		}
 
 		/// <summary>
@@ -25,9 +26,11 @@ namespace LoanGatewayAdmin.Controllers.v1
 		[ProducesResponseType(typeof(ApiResponse<string, List<ErrorDetail>>), 500)]
 		public async Task<IActionResult> GetApplications()
 		{
+			_logger.LogInformation("Received Get All Loan Applications request");
 			try
 			{
 				var applications = await _loanAdminService.GetLoanApplicationsAsync();
+				_logger.LogInformation($"Total Applications: {applications.Count}");
 
 				return Ok(ApiResponse<List<LoanApplication>, string>.SuccessObject(applications, Message.Success));
 			}
@@ -51,6 +54,7 @@ namespace LoanGatewayAdmin.Controllers.v1
 		[ProducesResponseType(typeof(ApiResponse<string, List<ErrorDetail>>), 500)]
 		public async Task<IActionResult> GetApplication(string arn)
 		{
+			_logger.LogInformation($"Received Get Loan Application request for ARN : {arn}");
 			try
 			{
 				if (string.IsNullOrWhiteSpace(arn))
@@ -64,7 +68,7 @@ namespace LoanGatewayAdmin.Controllers.v1
 
 				var application = await _loanAdminService.GetLoanApplicationAsync(arn);
 
-				if (application == null)
+				if (application == null || string.IsNullOrWhiteSpace(application.Arn))
 				{
 					var error = new List<ErrorDetail>
 					{
