@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "WFvPrkN4wk11WKHBRpLF8kJFPOXPLi9qgC6kDhEHpEZL3RUpNry8MTtruxjOAQBm3Ewp9R/lTTrIWdUnajbOHg==",
+  "success": true,
+  "projectFilePath": "C:\\Learning\\Hackathon2024\\New-Checkout\\loan-admin-gateway\\LoanAdminGateway\\LoanGatewayShared\\LoanGatewayShared.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sahad\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
+    "C:\\Users\\sahad\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
+    "C:\\Users\\sahad\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
