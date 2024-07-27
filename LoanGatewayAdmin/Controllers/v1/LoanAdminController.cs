@@ -90,7 +90,7 @@ namespace LoanGatewayAdmin.Controllers.v1
 		}
 
 		[HttpPut("applications")]
-		[ProducesResponseType(typeof(ApiResponse<LoanStatusResponse, string>), 200)]
+		[ProducesResponseType(typeof(ApiResponse<bool, string>), 200)]
 		[ProducesResponseType(typeof(ApiResponse<string, List<ErrorDetail>>), 400)]
 		[ProducesResponseType(typeof(ApiResponse<string, List<ErrorDetail>>), 500)]
 		public async Task<IActionResult> UpdateStatus([FromBody] StatusUpdateRequest statusUpdateRequest)
@@ -129,18 +129,9 @@ namespace LoanGatewayAdmin.Controllers.v1
 					return StatusCode(400, ApiResponse<string, List<ErrorDetail>>.ErrorObject(error));
 				}
 
-				var loanStatusResponse = await _loanAdminService.UpdateStatus(statusUpdateRequest);
+				var loanStatusResponse = await _loanAdminService.UpdateStatus(statusUpdateRequest);				
 
-				if (loanStatusResponse != null && string.IsNullOrWhiteSpace(loanStatusResponse.Arn))
-				{
-					var error = new List<ErrorDetail>
-					{
-						new ErrorDetail { ErrorCode = "400", Message = "Unable to process the update request" }
-					};
-					return StatusCode(400, ApiResponse<string, List<ErrorDetail>>.ErrorObject(error));
-				}
-
-				return Ok(ApiResponse<LoanStatusResponse, string>.SuccessObject(loanStatusResponse, Message.Success));
+				return Ok(ApiResponse<bool, string>.SuccessObject(loanStatusResponse, Message.Success));
 			}
 			catch (Exception ex)
 			{

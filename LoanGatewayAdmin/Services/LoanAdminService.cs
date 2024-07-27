@@ -74,9 +74,9 @@ namespace LoanGatewayAdmin.Services
 			}
 		}
 
-		public async Task<LoanStatusResponse> UpdateStatus(StatusUpdateRequest statusUpdateRequest)
+		public async Task<bool> UpdateStatus(StatusUpdateRequest statusUpdateRequest)
 		{
-			var statusResponse = new LoanStatusResponse();
+			var statusResponse = false;
 			try
 			{
 				var request = new RestRequest(_loanGatewayServiceOptions.UpdateStatusEndPoint);
@@ -84,9 +84,9 @@ namespace LoanGatewayAdmin.Services
 
 				var response = await _loanGatewayClient.PutAsync(request);
 
-				var apiResponse = JsonConvert.DeserializeObject<ApiResponse<LoanStatusResponse, string>>(response.Content);
+				var apiResponse = JsonConvert.DeserializeObject<ApiResponse<bool, string>>(response.Content);
 
-				statusResponse = apiResponse?.Data;
+				statusResponse = apiResponse != null && apiResponse.Data;
 
 				return statusResponse;
 
@@ -94,7 +94,7 @@ namespace LoanGatewayAdmin.Services
 			catch(Exception ex)
 			{
 				_logger.LogError(ex, $"Unable to update Status");
-				return new LoanStatusResponse() { Arn = string.Empty };
+				return statusResponse;
 			}
 		}
 	}

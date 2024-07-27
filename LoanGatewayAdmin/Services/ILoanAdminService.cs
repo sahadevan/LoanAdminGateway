@@ -9,7 +9,7 @@ namespace LoanGatewayAdmin.Services
 
 		Task<LoanApplication> GetLoanApplicationAsync(string arn);
 
-		Task<LoanStatusResponse> UpdateStatus(StatusUpdateRequest statusUpdateRequest);
+		Task<bool> UpdateStatus(StatusUpdateRequest statusUpdateRequest);
 
 	}
 }
