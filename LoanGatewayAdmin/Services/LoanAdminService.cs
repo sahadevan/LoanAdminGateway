@@ -48,7 +48,7 @@ namespace LoanGatewayAdmin.Services
 			catch(Exception ex)
 			{
 				_logger.LogError(ex, $"Unable to get Loan Application details");
-				return application;
+				return new LoanApplication() { Arn = string.Empty };
 			}
 		}
 
@@ -70,13 +70,32 @@ namespace LoanGatewayAdmin.Services
 			catch (Exception ex)
 			{
 				_logger.LogError(ex, $"Unable to get all Loan Application details");
-				return applications;
+				return Enumerable.Empty<LoanApplication>().ToList();
 			}
 		}
 
-		public Task<LoanApplication> UpdateStatus(LoanApplication application, LoanApplicationUpdate loanApplicationUpdate)
-		{	
-			throw new NotImplementedException();
+		public async Task<LoanStatusResponse> UpdateStatus(StatusUpdateRequest statusUpdateRequest)
+		{
+			var statusResponse = new LoanStatusResponse();
+			try
+			{
+				var request = new RestRequest(_loanGatewayServiceOptions.UpdateStatusEndPoint);
+				request.AddBody(statusUpdateRequest);
+
+				var response = await _loanGatewayClient.PutAsync(request);
+
+				var apiResponse = JsonConvert.DeserializeObject<ApiResponse<LoanStatusResponse, string>>(response.Content);
+
+				statusResponse = apiResponse?.Data;
+
+				return statusResponse;
+
+			}
+			catch(Exception ex)
+			{
+				_logger.LogError(ex, $"Unable to update Status");
+				return new LoanStatusResponse() { Arn = string.Empty };
+			}
 		}
 	}
 }

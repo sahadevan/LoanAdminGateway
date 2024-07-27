@@ -1,5 +1,4 @@
-﻿using LoanGatewayAdmin.Models;
-using LoanGatewayShared.Models;
+﻿using LoanGatewayShared.Models;
 
 namespace LoanGatewayAdmin.Services
 {
@@ -10,7 +9,7 @@ namespace LoanGatewayAdmin.Services
 
 		Task<LoanApplication> GetLoanApplicationAsync(string arn);
 
-		Task<LoanApplication> UpdateStatus(LoanApplication application, LoanApplicationUpdate loanApplicationUpdate);
+		Task<LoanStatusResponse> UpdateStatus(StatusUpdateRequest statusUpdateRequest);
 
 	}
 }

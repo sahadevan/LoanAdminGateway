@@ -7,5 +7,7 @@
 	   public string Url { get; set; }
 
 	   public string LoanApplicationsEndPoint { get; set; }
+
+	   public string UpdateStatusEndPoint { get; set; }
 	}
 }
